@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSIT Student Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #F5F6F5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            text-align: center;
+        }
+        .header {
+            margin-bottom: 20px;
+        }
+        .header img {
+            max-width: 250px; /* Increased size to approximate h1 prominence */
+            height: auto;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #1E90FF;
+            font-size: 2em;
+            margin: 10px 0;
+        }
+        form {
+            margin: 20px 0;
+        }
+        input {
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #1E90FF;
+            border-radius: 5px;
+            width: 250px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #104E8B;
+        }
+        .error {
+            color: #FF0000;
+            display: none;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #104E8B;
+            color: white;
+            font-weight: bold;
+        }
+        td {
+            color: #333;
+        }
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        h3 {
+            color: #1E90FF;
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            padding: 10px;
+            background-color: #E8ECEF;
+            border-top: 2px solid #1E90FF;
+            text-align: center;
+            font-size: 0.9em;
+            color: #333;
+        }
+        .footer span {
+            color: #1E90FF;
+            font-weight: bold;
+        }
+        @media (max-width: 600px) {
+            input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            button {
+                width: 100%;
+                margin-top: 10px;
+            }
+            .header img {
+                max-width: 150px; /* Smaller logo on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="/static/csit_logo.png" alt="CSIT Department Logo">
+            <h2>CSIT Student Report Generator</h2>
+        </div>
+        <form action="/" method="post">
+            <input type="text" name="roll_no" placeholder="Enter Roll No (e.g., 2200090051)" required>
+            <button type="submit">Generate Report</button>
+        </form>
+        <p class="error" id="error">{{ error_message }}</p>
+
+        {% if student %}
+        <h3>Student Details</h3>
+        <table>
+            <tr>
+                <th>Roll No</th><th>Name</th><th>Hostel Status</th><th>CGPA</th>
+                <th>Total Registered Credits</th><th>Result Declared Credits</th>
+                <th>Result Awaiting Credits</th><th>Obtained Credits</th>
+                <th>Cumulative Grade Points</th><th>Error</th><th>Backlog Count</th>
+            </tr>
+            <tr>
+                <td>{{ student['Roll No'] }}</td>
+                <td>{{ student['Name'] }}</td>
+                <td>{{ student['Hostel status'] }}</td>
+                <td>{{ student['cgpa'] }}</td>
+                <td>{{ student['Total Registerd credits'] }}</td>
+                <td>{{ student['Result Decl declared Credits'] }}</td>
+                <td>{{ student['Result Awaiting Credits'] }}</td>
+                <td>{{ student['Obtained Credits'] }}</td>
+                <td>{{ student['Cumulative Grade Points'] }}</td>
+                <td>{{ student['Error'] }}</td>
+                <td>{{ student['Backlog Count'] }}</td>
+            </tr>
+        </table>
+
+        <h3>Not Declared Courses and Backlogs</h3>
+        <table>
+            <tr>
+                <th>Not Declared Courses</th>
+                <th>Backlog Details</th>
+            </tr>
+            <tr>
+                <td>
+                    <ul>
+                        {% for course in student['Not Declared Courses'] %}
+                        <li>{{ course }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        {% for backlog in student['Backlog Details'] %}
+                        <li>{{ backlog }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        {% endif %}
+
+        <div class="footer">
+            Developed by <span>Dr. Bhaskar Marapelli</span>, Associate Professor & Alternate HOD CSIT
+        </div>
+    </div>
+
+    <script>
+        {% if error_message %}
+        document.getElementById('error').style.display = 'block';
+        {% endif %}
+    </script>
+</body>
+</html>
